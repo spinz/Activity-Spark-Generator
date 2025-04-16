@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Spark Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Activity Spark Generator</h1>
+      <p class="subtitle">AI-powered inspiration for K-3 teachers</p>
+    </header>
+    <section class="config-section">
+      <label for="service-select">AI Service:</label>
+      <select id="service-select">
+        <option value="openrouter">OpenRouter</option>
+        <option value="gemini">Gemini</option>
+      </select>
+      <label for="api-key">API Key:</label>
+      <input type="password" id="api-key" placeholder="Enter your API key...">
+      <button id="save-config">Save</button>
+      <span id="config-status"></span>
+    </section>
+    <section class="input-section">
+      <div class="input-group">
+        <label for="subject">Subject:</label>
+        <select id="subject">
+          <option value="Art">Art</option>
+          <option value="Dance">Dance</option>
+          <option value="Drama">Drama</option>
+          <option value="Phys Ed">Phys Ed</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="grade">Grade Level:</label>
+        <select id="grade">
+          <option value="Kindergarten">Kindergarten</option>
+          <option value="Grade 1">Grade 1</option>
+          <option value="Grade 2">Grade 2</option>
+          <option value="Grade 3">Grade 3</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="theme">Theme/Topic (Optional):</label>
+        <input type="text" id="theme" placeholder="e.g., Spring, Animals, Feelings">
+      </div>
+      <div class="input-group">
+        <label for="materials">Materials/Constraints (Optional):</label>
+        <input type="text" id="materials" placeholder="e.g., paper plates, beanbags">
+      </div>
+      <div class="input-group">
+        <label for="time">Time Estimate (Optional):</label>
+        <select id="time">
+          <option value="">Select...</option>
+          <option value="Warm-up (5-10 min)">Warm-up (5-10 min)</option>
+          <option value="Main Activity (20-30 min)">Main Activity (20-30 min)</option>
+          <option value="Cool-down (5 min)">Cool-down (5 min)</option>
+        </select>
+      </div>
+      <button id="generate">Generate Ideas</button>
+    </section>
+    <section id="output-section">
+      <h2>Activity Ideas</h2>
+      <ul id="ideas-list"></ul>
+    </section>
+  </div>
+  <footer>
+    <p>Made with ❤️ for Shawna and K-3 teachers everywhere!</p>
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0ecfc 100%);
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 2rem;
+}
+header {
+  text-align: center;
+}
+header h1 {
+  font-size: 2.2rem;
+  color: #3a7bd5;
+  margin-bottom: 0.2rem;
+}
+.subtitle {
+  color: #ffb347;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.config-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.config-section label {
+  font-weight: 500;
+}
+#api-key {
+  width: 180px;
+}
+#save-config {
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+#save-config:hover {
+  background: #285a99;
+}
+.input-section {
+  margin-bottom: 2rem;
+}
+.input-group {
+  margin-bottom: 1rem;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #3a7bd5;
+}
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1e3fc;
+  font-size: 1rem;
+}
+#generate {
+  background: #ffb347;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+#generate:hover {
+  background: #ff9800;
+}
+#output-section {
+  background: #f3faff;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+#output-section h2 {
+  color: #3a7bd5;
+}
+#ideas-list {
+  list-style: none;
+  padding: 0;
+}
+#ideas-list li {
+  background: #fffbe7;
+  border-radius: 0.7rem;
+  margin-bottom: 0.7rem;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 1px 4px rgba(255,179,71,0.08);
+}
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #888;
+  font-size: 0.95rem;
+}
