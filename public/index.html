@@ -7,10 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <nav class="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="navbar-title">Activity Spark Generator</div>
+  </nav>
+  <main class="main-content" role="main">
   <div class="container">
     <header>
       <h1>Activity Spark Generator</h1>
-      <p class="subtitle">AI-powered inspiration for K-3 teachers</p>
+      <p class="subtitle">AI-powered inspiration for K-8 teachers</p>
     </header>
     <section class="config-section">
       <label for="service-select">AI Service:</label>
@@ -27,6 +31,11 @@
       <div class="input-group">
         <label for="subject">Subject:</label>
         <select id="subject">
+          <option value="Math">Math</option>
+          <option value="Science">Science</option>
+          <option value="Social Studies">Social Studies</option>
+          <option value="Literacy">Literacy</option>
+          <option value="Music">Music</option>
           <option value="Art">Art</option>
           <option value="Dance">Dance</option>
           <option value="Drama">Drama</option>
@@ -40,6 +49,11 @@
           <option value="Grade 1">Grade 1</option>
           <option value="Grade 2">Grade 2</option>
           <option value="Grade 3">Grade 3</option>
+          <option value="Grade 4">Grade 4</option>
+          <option value="Grade 5">Grade 5</option>
+          <option value="Grade 6">Grade 6</option>
+          <option value="Grade 7">Grade 7</option>
+          <option value="Grade 8">Grade 8</option>
         </select>
       </div>
       <div class="input-group">
@@ -63,12 +77,19 @@
     </section>
     <section id="output-section">
       <h2>Activity Ideas</h2>
-      <ul id="ideas-list"></ul>
-    </section>
+      <section id="output-section">
+        <h2>Activity Ideas</h2>
+        <ul id="ideas-list"></ul>
+      </section>
+      <div id="expanded-panel" style="display:none;">
+        <button id="close-expanded">&larr; Back to Ideas</button>
+        <div id="expanded-content"></div>
+      </div>
   </div>
   <footer>
-    <p>Made with ❤️ for Shawna and K-3 teachers everywhere!</p>
+    <p>Made with ❤️ for Shawna and K-8 teachers everywhere!</p>
   </footer>
+  </main>
   <script src="main.js"></script>
 </body>
 </html>

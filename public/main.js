@@ -30,9 +30,31 @@ const time = document.getElementById('time');
 const generateBtn = document.getElementById('generate');
 const ideasList = document.getElementById('ideas-list');
 
+// --- Curriculum Data ---
+let curriculumData = {};
+
+// Load curriculum.json on startup
+fetch('curriculum.json')
+  .then(response => response.json())
+  .then(data => {
+    curriculumData = data;
+  })
+  .catch(() => {
+    curriculumData = {};
+    console.warn('Could not load curriculum.json');
+  });
+
 // --- AI Prompt Construction ---
 function buildPrompt() {
   let prompt = `Generate 5 creative, age-appropriate activity ideas for a ${subject.value} class, grade ${grade.value}`;
+  // Add curriculum expectations if available
+  if (curriculumData && curriculumData[subject.value] && curriculumData[subject.value][grade.value]) {
+    const expectations = curriculumData[subject.value][grade.value];
+    prompt += `\nOntario Curriculum Expectations for this grade/subject:`;
+    expectations.forEach((ex, idx) => {
+      prompt += `\n${idx + 1}. ${ex}`;
+    });
+  }
   if (theme.value) prompt += `, with the theme/topic: ${theme.value}`;
   if (materials.value) prompt += `, using these materials/constraints: ${materials.value}`;
   if (time.value) prompt += `, for a ${time.value}`;
@@ -111,6 +133,54 @@ generateBtn.addEventListener('click', async () => {
   const ideas = result.split(/\n\d+\. /g).filter(Boolean);
   ideasList.innerHTML = '';
   ideas.forEach((idea, idx) => {
-    ideasList.innerHTML += `<li><strong>${idx + 1}.</strong> ${idea.trim()}</li>`;
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${idx + 1}.</strong> ${idea.trim()}`;
+    // Add expand button
+    const expandBtn = document.createElement('button');
+    expandBtn.textContent = 'Expand';
+    expandBtn.className = 'expand-btn';
+    expandBtn.addEventListener('click', () => expandIdea(idea.trim()));
+    li.appendChild(expandBtn);
+    ideasList.appendChild(li);
   });
 });
+
+// Expand idea logic
+async function expandIdea(ideaText) {
+  // Animate UI
+  const mainFlex = document.getElementById('main-flex');
+  const expandedPanel = document.getElementById('expanded-panel');
+  const expandedContent = document.getElementById('expanded-content');
+  mainFlex.classList.add('expanded');
+  expandedPanel.style.display = 'block';
+  expandedContent.innerHTML = '<em>Loading detailed steps...</em>';
+
+  // Build detailed prompt
+  let detailPrompt = `Expand on this classroom activity idea for a ${subject.value} class, grade ${grade.value}`;
+  if (curriculumData && curriculumData[subject.value] && curriculumData[subject.value][grade.value]) {
+    const expectations = curriculumData[subject.value][grade.value];
+    detailPrompt += `\nOntario Curriculum Expectations for this grade/subject:`;
+    expectations.forEach((ex, idx) => {
+      detailPrompt += `\n${idx + 1}. ${ex}`;
+    });
+  }
+  detailPrompt += `\n\nActivity Idea: ${ideaText}\n\nProvide a detailed, step-by-step guide for running this activity in the classroom. Include at least two concrete examples or variations. List any materials or preparation needed. Format clearly for teachers.`;
+
+  // Fetch expanded details
+  const expandedResult = await fetchIdeas(detailPrompt);
+  expandedContent.innerHTML = expandedResult ? expandedResult : '<em>Could not fetch expanded details.</em>';
+}
+
+// Close expanded panel
+const closeBtn = document.getElementById('close-expanded');
+if (closeBtn) {
+  closeBtn.addEventListener('click', () => {
+    const mainFlex = document.getElementById('main-flex');
+    const expandedPanel = document.getElementById('expanded-panel');
+    const expandedContent = document.getElementById('expanded-content');
+    mainFlex.classList.remove('expanded');
+    expandedPanel.style.display = 'none';
+    expandedContent.innerHTML = '';
+  });
+}
+

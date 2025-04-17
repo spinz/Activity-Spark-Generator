@@ -1,0 +1,72 @@
+{
+  "Math": {
+    "Kindergarten": [
+      "Explore and describe patterns using objects, actions, and numbers.",
+      "Demonstrate an understanding of numbers, using concrete materials to explore and investigate counting, quantity, and number relationships."
+    ],
+    "Grade 1": [
+      "Read, represent, compare, and order whole numbers to 50.",
+      "Solve problems involving the addition and subtraction of single-digit whole numbers."
+    ],
+    "Grade 2": [
+      "Read, represent, compare, and order whole numbers to 100.",
+      "Demonstrate an understanding of addition and subtraction of numbers to 18."
+    ]
+  },
+  "Science": {
+    "Kindergarten": [
+      "Explore the characteristics and needs of living things.",
+      "Investigate properties of materials and objects."
+    ],
+    "Grade 1": [
+      "Assess the role of humans in maintaining a healthy environment.",
+      "Investigate needs and characteristics of living things."
+    ],
+    "Grade 2": [
+      "Investigate the growth and changes in animals.",
+      "Explore properties of liquids and solids."
+    ]
+  },
+  "Social Studies": {
+    "Kindergarten": [
+      "Demonstrate an understanding of the diversity of families, roles, and responsibilities.",
+      "Explore the local community and its features."
+    ],
+    "Grade 1": [
+      "Describe some of the ways in which people interact with each other in communities.",
+      "Identify and describe significant people, places, and events in their community."
+    ],
+    "Grade 2": [
+      "Investigate traditions and celebrations of various cultures.",
+      "Describe roles and responsibilities of family members."
+    ]
+  },
+  "Literacy": {
+    "Kindergarten": [
+      "Demonstrate an interest in reading and writing activities.",
+      "Use language to communicate their thinking, feelings, and experiences."
+    ],
+    "Grade 1": [
+      "Read and demonstrate understanding of a variety of literary, graphic, and informational texts.",
+      "Communicate ideas and information orally in a clear, coherent manner."
+    ],
+    "Grade 2": [
+      "Identify and use several reading comprehension strategies.",
+      "Write short texts using a few simple forms."
+    ]
+  },
+  "Music": {
+    "Kindergarten": [
+      "Explore and express ideas and feelings about music through movement and discussion.",
+      "Use their voices and simple instruments to create and perform music."
+    ],
+    "Grade 1": [
+      "Sing and play music from a variety of cultures and times.",
+      "Identify and use the elements of music (beat, rhythm, melody, etc.)."
+    ],
+    "Grade 2": [
+      "Create and perform music using a variety of sound sources.",
+      "Identify musical forms and elements in familiar music."
+    ]
+  }
+}

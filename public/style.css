@@ -1,10 +1,329 @@
 body {
-  background: linear-gradient(135deg, #f8fafc 0%, #e0ecfc 100%);
+  background: linear-gradient(135deg, #f3f7fa 0%, #e6ecf7 100%);
   font-family: 'Segoe UI', 'Arial', sans-serif;
   color: #222;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
+.navbar {
+  width: 100%;
+  background: #3a7bd5;
+  color: #fff;
+  padding: 1.1rem 0;
+  box-shadow: 0 2px 8px rgba(58,123,213,0.07);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+.navbar-title {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.main-content {
+  max-width: 1100px;
+  margin: 2.5rem auto 0 auto;
+  padding: 0 1.5rem 2rem 1.5rem;
+}
+.container {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  padding: 2.2rem 2.5rem 2rem 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+header h1, .navbar-title {
+  font-size: 2.3rem;
+  color: #3a7bd5;
+  margin-bottom: 0.2rem;
+}
+.subtitle {
+  color: #ffb347;
+  font-size: 1.13rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+.config-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 1.5rem;
+  align-items: center;
+  margin-bottom: 2.2rem;
+  justify-content: center;
+  background: #f6faff;
+  border-radius: 1rem;
+  padding: 1.1rem 1.2rem 0.5rem 1.2rem;
+  box-shadow: 0 1px 4px rgba(58,123,213,0.06);
+}
+.config-section label {
+  font-weight: 500;
+  color: #3a7bd5;
+}
+#api-key, #service-select {
+  width: 180px;
+}
+#save-config {
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+  margin-left: 0.5rem;
+}
+#save-config:hover {
+  background: #285a99;
+}
+.input-section {
+  margin-bottom: 2.2rem;
+}
+.input-group {
+  margin-bottom: 1.2rem;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #3a7bd5;
+  font-weight: 500;
+}
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1e3fc;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+.input-group input:focus, .input-group select:focus {
+  outline: none;
+  border: 1.5px solid #3a7bd5;
+}
+#generate {
+  background: #ffb347;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.13rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(255,179,71,0.10);
+}
+#generate:hover {
+  background: #ff9800;
+}
+
+#output-section {
+  background: #f3faff;
+  border-radius: 1.1rem;
+  padding: 1.1rem 1.1rem 1.1rem 1.1rem;
+  min-width: 280px;
+  max-width: 340px;
+  flex: 0 0 340px;
+  box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(.4,2,.6,1);
+  box-shadow: 0 2px 12px rgba(58,123,213,0.04);
+  z-index: 1;
+}
+#main-flex.expanded #output-section {
+  max-width: 180px;
+  min-width: 120px;
+  opacity: 0.7;
+  filter: blur(0.5px);
+  background: #f8fafc;
+}
+
+#expanded-panel {
+  display: none;
+  background: #fffef7;
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 32px rgba(255,179,71,0.11), 0 2px 12px rgba(58,123,213,0.07);
+  border: 1.5px solid #ffe6b6;
+  padding: 2.7rem 2.5rem 2.5rem 2.5rem;
+  min-width: 480px;
+  max-width: 650px;
+  flex: 1 1 650px;
+  animation: slideIn 0.4s cubic-bezier(.4,2,.6,1);
+  margin-left: 0.6rem;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#main-flex.expanded #expanded-panel {
+  display: flex;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.expand-btn {
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.98rem;
+  margin-left: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(58,123,213,0.07);
+}
+.expand-btn:hover {
+  background: #285a99;
+}
+#close-expanded {
+  background: #ffb347;
+  color: #222;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.45rem 1.2rem;
+  font-size: 1.12rem;
+  margin-bottom: 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(255,179,71,0.08);
+}
+#close-expanded:hover {
+  background: #ff9800;
+}
+#expanded-content {
+  font-size: 1.13rem;
+  line-height: 1.85;
+  color: #2c2c2c;
+  max-width: 95%;
+  margin: 0 auto;
+  padding-top: 2.7rem;
+}
+#expanded-content h2,
+#expanded-content h3 {
+  color: #3a7bd5;
+  font-size: 1.25rem;
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+  font-weight: 700;
+}
+#expanded-content strong {
+  color: #ff9800;
+  font-weight: 600;
+}
+#expanded-content ul, #expanded-content ol {
+  margin: 0.7em 0 0.7em 1.4em;
+  padding: 0;
+}
+#expanded-content li {
+  margin-bottom: 0.5em;
+  font-size: 1.08rem;
+}
+#expanded-content p {
+  margin-bottom: 1.1em;
+}
+#expanded-content .step-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #3a7bd5;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+#ideas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+#ideas-list li {
+  background: #fff;
+  border-radius: 1.1rem;
+  margin: 0;
+  padding: 1.3rem 2.1rem 1.3rem 1.7rem;
+  box-shadow: 0 2px 12px rgba(58,123,213,0.07);
+  display: flex;
+  align-items: center;
+  font-size: 1.13rem;
+  font-weight: 500;
+  width: 100%;
+  min-height: 64px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1.5px solid #e0ecfc;
+  position: relative;
+  cursor: pointer;
+}
+#ideas-list li:hover {
+  box-shadow: 0 4px 24px rgba(58,123,213,0.11);
+  border-color: #3a7bd5;
+  transform: translateY(-2px) scale(1.01);
+}
+.expand-btn {
+  margin-left: auto;
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px rgba(58,123,213,0.07);
+}
+.expand-btn:hover {
+  background: #285a99;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  color: #888;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  background: none;
+  box-shadow: none;
+}
+@media (max-width: 1100px) {
+  .main-content {
+    max-width: 98vw;
+    padding: 0 0.5rem 2rem 0.5rem;
+  }
+  .container {
+    max-width: 98vw;
+    padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+  }
+  #main-flex {
+    flex-direction: column;
+    gap: 1.2rem;
+    min-height: unset;
+  }
+  #output-section, #expanded-panel {
+    min-width: 0;
+    max-width: 100vw;
+    width: 100%;
+  }
+  #expanded-panel {
+    padding: 1.2rem 0.9rem;
+    margin-left: 0;
+  }
+}
+
 .container {
   max-width: 600px;
   margin: 2rem auto;
@@ -84,11 +403,77 @@ header h1 {
 #generate:hover {
   background: #ff9800;
 }
+#main-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: flex-start;
+}
 #output-section {
   background: #f3faff;
   border-radius: 1rem;
   padding: 1rem;
-  margin-top: 1.5rem;
+  min-width: 280px;
+  max-width: 320px;
+  flex: 0 0 320px;
+  box-sizing: border-box;
+  transition: all 0.4s cubic-bezier(.4,2,.6,1);
+}
+#main-flex.expanded #output-section {
+  max-width: 220px;
+  min-width: 180px;
+  opacity: 0.6;
+}
+#expanded-panel {
+  display: none;
+  background: #fffbe7;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(255,179,71,0.09);
+  padding: 2rem 2.5rem;
+  min-width: 420px;
+  max-width: 600px;
+  flex: 1 1 600px;
+  animation: slideIn 0.4s cubic-bezier(.4,2,.6,1);
+}
+#main-flex.expanded #expanded-panel {
+  display: block;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.expand-btn {
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.95rem;
+  margin-left: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.expand-btn:hover {
+  background: #285a99;
+}
+#close-expanded {
+  background: #ffb347;
+  color: #222;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#close-expanded:hover {
+  background: #ff9800;
+}
+#expanded-content {
+  font-size: 1.08rem;
+  line-height: 1.6;
 }
 #output-section h2 {
   color: #3a7bd5;
