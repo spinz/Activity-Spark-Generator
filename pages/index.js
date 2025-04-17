@@ -1,12 +1,11 @@
 // pages/index.js
 import { useState, useEffect } from 'react';
+import { signOut } from 'next-auth/react';
+import Link from 'next/link';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 
-export default function Home() {
-  // Config state
-  const [service, setService] = useState('openrouter');
-  const [apiKey, setApiKey] = useState('');
-  const [configStatus, setConfigStatus] = useState('');
-
+export default function Home({ session }) {
   // Input state
   const [subject, setSubject] = useState('Math');
   const [grade, setGrade] = useState('Kindergarten');
@@ -23,24 +22,12 @@ export default function Home() {
   const [expandedVisible, setExpandedVisible] = useState(false);
 
   useEffect(() => {
-    // Load config
-    const savedService = localStorage.getItem('ai_service');
-    const savedKey = localStorage.getItem('ai_api_key');
-    if (savedService) setService(savedService);
-    if (savedKey) setApiKey(savedKey);
     // Fetch curriculum
     fetch('/curriculum.json')
       .then(res => res.json())
       .then(data => setCurriculumData(data))
       .catch(() => console.warn('Could not load curriculum.json'));
   }, []);
-
-  const saveConfig = () => {
-    localStorage.setItem('ai_service', service);
-    localStorage.setItem('ai_api_key', apiKey);
-    setConfigStatus('Saved!');
-    setTimeout(() => setConfigStatus(''), 1500);
-  };
 
   const buildPrompt = () => {
     let prompt = `Generate 5 creative, age-appropriate activity ideas for a ${subject} class, grade ${grade}`;
@@ -98,38 +85,107 @@ export default function Home() {
     <div id="main-flex">
       <nav className="navbar">
         <div className="navbar-title">Activity Spark Generator</div>
+        {session && (
+          <div className="navbar-actions">
+            <span>Welcome, {session.user.name}</span>
+            <button onClick={() => signOut()}>Logout</button>
+            {session.user.role === 'ADMIN' && <Link href="/admin">Admin</Link>}
+          </div>
+        )}
       </nav>
       <div className="container">
         <header>
           <h1>Activity Spark Generator</h1>
           <p className="subtitle">AI-powered inspiration for K-8 teachers</p>
         </header>
-        <section className="config-section">
-          <label htmlFor="service-select">AI Service:</label>
-          <select id="service-select" value={service} onChange={e => setService(e.target.value)}>
-            <option value="openrouter">OpenRouter</option>
-            <option value="gemini">Gemini</option>
-          </select>
-          <label htmlFor="api-key">API Key:</label>
-          <input id="api-key" type="password" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="Enter your API key..." />
-          <button id="save-config" onClick={saveConfig}>Save</button>
-          <span id="config-status">{configStatus}</span>
-        </section>
-        <section className="input-section">
-          <div className="input-group">
-            <label htmlFor="subject">Subject:</label>
-            <select id="subject" value={subject} onChange={e => setSubject(e.target.value)}>
-              <option value="Math">Math</option>
-              <option value="Science">Science</option>
-              <option value="Social Studies">Social Studies</option>
-              <option value="Literacy">Literacy</option>
-              <option value="Music">Music</option>
-              <option value="Art">Art</option>
-              <option value="Dance">Dance</option>
-              <option value="Drama">Drama</option>
-              <option value="Phys Ed">Phys Ed</option>
-            </select>
+        <div className="main-grid">
+          <section className="input-section">
+            <div className="input-group">
+              <label htmlFor="subject">Subject:</label>
+              <select id="subject" value={subject} onChange={e => setSubject(e.target.value)}>
+                <option value="Math">Math</option>
+                <option value="Science">Science</option>
+                <option value="Social Studies">Social Studies</option>
+                <option value="Literacy">Literacy</option>
+                <option value="Music">Music</option>
+                <option value="Art">Art</option>
+                <option value="Dance">Dance</option>
+                <option value="Drama">Drama</option>
+                <option value="Phys Ed">Phys Ed</option>
+              </select>
+            </div>
+            <div className="input-group">
+              <label htmlFor="grade">Grade Level:</label>
+              <select id="grade" value={grade} onChange={e => setGrade(e.target.value)}>
+                <option value="Kindergarten">Kindergarten</option>
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+              </select>
+            </div>
+            <div className="input-group">
+              <label htmlFor="theme">Theme/Topic (optional):</label>
+              <input id="theme" value={theme} onChange={e => setTheme(e.target.value)} placeholder="e.g. Space, Fractions, Community" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="materials">Materials/Constraints (optional):</label>
+              <input id="materials" value={materials} onChange={e => setMaterials(e.target.value)} placeholder="e.g. Paper, No tech, Outdoors" />
+            </div>
+            <div className="input-group">
+              <label htmlFor="time-estimate">Time Estimate (optional):</label>
+              <select id="time-estimate" value={timeEstimate} onChange={e => setTimeEstimate(e.target.value)}>
+                <option value="">Select...</option>
+                <option value="Warm-up (5-10 min)">Warm-up (5-10 min)</option>
+                <option value="Main Activity (20-30 min)">Main Activity (20-30 min)</option>
+                <option value="Cool-down (5 min)">Cool-down (5 min)</option>
+              </select>
+            </div>
+          </section>
+          <div className="generate-container">
+            <button id="generate" onClick={handleGenerate}>Generate Ideas</button>
           </div>
-          <div className="input-group">
-            <label htmlFor="grade">Grade Level:</label>
-            <select id="grade" value={grade} onChange={e => setGrade(e.target.value)}>
+          <section className="ideas-section">
+            <h2>Ideas</h2>
+            <ol>
+              {ideas.map((idea, idx) => (
+                <li key={idx}>
+                  <div className="idea-text">{idea}</div>
+                  <button onClick={() => handleExpand(idea)}>Expand</button>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+        {expandedVisible && (
+          <div className="modal-overlay" onClick={closeExpand}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <button className="close-btn" onClick={closeExpand}>Close</button>
+              <div className="expanded-content">{expandedContent}</div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return { redirect: { destination: '/auth/login', permanent: false } };
+  }
+  // Ensure image is serializable
+  const safeSession = {
+    ...session,
+    user: {
+      ...session.user,
+      image: session.user.image ?? null,
+    },
+  };
+  return { props: { session: safeSession } };
+}

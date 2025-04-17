@@ -15,13 +15,13 @@ This roadmap outlines the phases and tasks needed to evolve the static demo into
   - `/api/auth/*`, `/api/prompts/generate`, `/api/prompts/expand`, `/api/stripe/webhook`
 
 ## Phase 2: Project & Infrastructure Setup
-- Initialize monorepo or single Next.js app
-- Configure environment variables for secrets (`.env.local`)
+- ~~Initialize monorepo or single Next.js app~~
+- ~~Configure environment variables for secrets (`.env.local`)~~
 - Install packages:
-  - front: `next/react/react-dom`
-  - back: `prisma/@prisma/client` or `mongoose`, `stripe`, `next-auth`
-- Setup database schema and run migrations
-- Seed minimal curriculum data for dev
+  - ~~front: `next/react/react-dom`~~
+  - ~~back: `prisma/@prisma/client` or `mongoose`, `stripe`, `next-auth`~~
+- ~~Setup database schema and run migrations~~
+- ~~Seed minimal curriculum data for dev~~
 
 ## Phase 3: Authentication & Authorization
 - Integrate NextAuth.js or Auth0:
@@ -39,19 +39,19 @@ This roadmap outlines the phases and tasks needed to evolve the static demo into
 - Enforce subscription status on generate endpoints
 
 ## Phase 5: AI Proxy & Service Layer
-- Move LLM API key to server env
-- Create server API for prompt generation:
-  - `POST /api/generate` uses `buildPrompt()` logic
-  - `POST /api/expand` for detailed guides
-- Add request logging & cost tracking (record tokens and usage)
-- Implement rate‑limiting or quotas per user/subscription tier
+- ~~Move LLM API key to server env~~
+- ~~Create server API for prompt generation:~~
+  - ~~`POST /api/generate` uses `buildPrompt()` logic~~
+  - ~~`POST /api/expand` for detailed guides~~
+- ~~Add request logging & cost tracking (record tokens and usage)~~
+- ~~Implement rate‑limiting or quotas per user/subscription tier~~
 
 ## Phase 6: Frontend Migration
-- Convert `public/index.html` UI into React components:
-  - `ConfigForm`, `InputForm`, `IdeasList`, `ExpandModal`  
-- Implement client‑side calls to server API
-- Display user state (logged in, subscription status)
-- Add dashboard to view past ideas and usage
+- ~~Convert `public/index.html` UI into React components:~~
+  - ~~`ConfigForm`, `InputForm`, `IdeasList`, `ExpandModal`~~  
+- ~~Implement client‑side calls to server API~~
+- ~~Display user state (logged in, subscription status)~~
+- ~~Add dashboard to view past ideas and usage~~
 
 ## Phase 7: Testing & Quality Assurance
 - Write unit tests for API routes (Jest + supertest)
