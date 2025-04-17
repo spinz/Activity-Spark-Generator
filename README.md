@@ -75,7 +75,7 @@ Contributions welcome! Open issues or PRs for:
 
 ## License
 
-MIT 2025 Your Name
+MIT 2025 Robbie Share
 
 ## Acknowledgements
 
