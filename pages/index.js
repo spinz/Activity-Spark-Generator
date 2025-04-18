@@ -109,7 +109,7 @@ export default function Home({ session }) {
         {session && (
           <div className="navbar-actions">
             <span>Welcome, {session.user.name}</span>
-            <button onClick={() => signOut()}>Logout</button>
+            <button onClick={() => signOut({ callbackUrl: '/auth/login' })}>Logout</button>
             {session.user.role === 'ADMIN' && <Link href="/admin">Admin</Link>}
           </div>
         )}
