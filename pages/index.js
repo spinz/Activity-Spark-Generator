@@ -175,17 +175,10 @@ export default function Home({ session }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  if (!session) {
-    return { redirect: { destination: '/auth/login', permanent: false } };
-  }
-  // Ensure image is serializable
-  const safeSession = {
-    ...session,
-    user: {
-      ...session.user,
-      image: session.user.image ?? null,
+  return {
+    redirect: {
+      destination: '/auth/login',
+      permanent: false,
     },
   };
-  return { props: { session: safeSession } };
 }
