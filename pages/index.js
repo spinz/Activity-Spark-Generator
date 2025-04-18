@@ -175,10 +175,23 @@ export default function Home({ session }) {
 }
 
 export async function getServerSideProps(context) {
-  return {
-    redirect: {
-      destination: '/auth/login',
-      permanent: false,
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+      },
+    };
+  }
+  const safeSession = {
+    ...session,
+    user: {
+      ...session.user,
+      image: session.user.image ?? null,
     },
+  };
+  return {
+    props: { session: safeSession },
   };
 }
