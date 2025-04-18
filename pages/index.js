@@ -189,6 +189,7 @@ export async function getServerSideProps(context) {
     user: {
       ...session.user,
       image: session.user.image ?? null,
+      approved: session.user.approved ?? null
     },
   };
   return {
