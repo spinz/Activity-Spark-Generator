@@ -20,6 +20,8 @@ export default function Home({ session }) {
   const [ideas, setIdeas] = useState([]);
   const [expandedContent, setExpandedContent] = useState('');
   const [expandedVisible, setExpandedVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isExpanding, setIsExpanding] = useState(false);
 
   useEffect(() => {
     // Fetch curriculum
@@ -47,15 +49,26 @@ export default function Home({ session }) {
 
   const handleGenerate = async () => {
     const prompt = buildPrompt();
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    });
-    const data = await res.json();
-    if (data.error) return alert(data.error);
-    const lines = data.result.split(/\n\d+\.\s/).filter(Boolean);
-    setIdeas(lines);
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+      const lines = data.result.split(/\n\d+\.\s/).filter(Boolean);
+      setIdeas(lines);
+    } catch (err) {
+      console.error(err);
+      alert('Error generating ideas.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleExpand = async (idea) => {
@@ -69,14 +82,22 @@ export default function Home({ session }) {
     detailPrompt += `\n\nActivity Idea: ${idea}`;
     detailPrompt += `\n\nProvide a detailed, step-by-step guide for running this activity in the classroom. Include at least two concrete examples or variations. List any materials or preparation needed. Format clearly for teachers.`;
     setExpandedVisible(true);
-    setExpandedContent('Loading detailed steps...');
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: detailPrompt }),
-    });
-    const data = await res.json();
-    setExpandedContent(data.error ? data.error : data.result);
+    setExpandedContent('');
+    setIsExpanding(true);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: detailPrompt }),
+      });
+      const data = await res.json();
+      setExpandedContent(data.error ? data.error : data.result);
+    } catch (err) {
+      console.error(err);
+      setExpandedContent('Error loading details.');
+    } finally {
+      setIsExpanding(false);
+    }
   };
 
   const closeExpand = () => setExpandedVisible(false);
@@ -147,7 +168,14 @@ export default function Home({ session }) {
             </div>
           </section>
           <div className="generate-container">
-            <button id="generate" onClick={handleGenerate}>Generate Ideas</button>
+            <button id="generate" onClick={handleGenerate} disabled={isLoading}>
+              {isLoading ? 'Generating...' : 'Generate Ideas'}
+            </button>
+            {isLoading && (
+              <div className="loading-bar">
+                <div className="loading-fill" />
+              </div>
+            )}
           </div>
           <section className="ideas-section">
             <h2>Ideas</h2>
@@ -165,6 +193,11 @@ export default function Home({ session }) {
           <div className="modal-overlay" onClick={closeExpand}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
               <button className="close-btn" onClick={closeExpand}>Close</button>
+              {isExpanding && (
+                <div className="loading-bar">
+                  <div className="loading-fill" />
+                </div>
+              )}
               <div className="expanded-content">{expandedContent}</div>
             </div>
           </div>
@@ -189,7 +222,8 @@ export async function getServerSideProps(context) {
     user: {
       ...session.user,
       image: session.user.image ?? null,
-      approved: session.user.approved ?? null
+      approved: session.user.approved ?? null,
+      suspended: session.user.suspended ?? null
     },
   };
   return {

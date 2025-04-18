@@ -14,6 +14,27 @@ export default function AdminPage({ users }) {
     else alert('Account approval failed');
   };
 
+  const handleSuspend = async (id, action) => {
+    const res = await fetch('/api/admin/suspend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: id, action })
+    });
+    if (res.ok) setUserList(userList.map(u => u.id === id ? { ...u, suspended: action === 'suspend' } : u));
+    else alert('Failed to update suspend state');
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('Delete this user?')) return;
+    const res = await fetch('/api/admin/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: id })
+    });
+    if (res.ok) setUserList(userList.filter(u => u.id !== id));
+    else alert('Failed to delete user');
+  };
+
   return (
     <div className="container">
       <h1>Admin Dashboard</h1>
@@ -25,6 +46,8 @@ export default function AdminPage({ users }) {
             <th>Name</th>
             <th>Role</th>
             <th>Approved</th>
+            <th>Suspended</th>
+            <th>Queries</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
@@ -36,8 +59,15 @@ export default function AdminPage({ users }) {
               <td>{u.name}</td>
               <td>{u.role}</td>
               <td>{u.approved ? 'Yes' : 'No'}</td>
+              <td>{u.suspended ? 'Yes' : 'No'}</td>
+              <td>{u.apiQueryCount}</td>
               <td>{new Date(u.createdAt).toLocaleString()}</td>
-              <td>{!u.approved ? <button onClick={() => handleApprove(u.id)}>Approve</button> : '-'}</td>
+              <td>
+                {!u.approved && <button onClick={() => handleApprove(u.id)}>Approve</button>}
+                {!u.suspended && <button onClick={() => handleSuspend(u.id, 'suspend')}>Suspend</button>}
+                {u.suspended && <button onClick={() => handleSuspend(u.id, 'resume')}>Resume</button>}
+                <button onClick={() => handleDelete(u.id)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -55,6 +85,6 @@ export async function getServerSideProps(context) {
   if (session.user.role !== 'ADMIN') {
     return { redirect: { destination: '/', permanent: false } };
   }
-  const users = await prisma.user.findMany({ select: { id: true, email: true, name: true, role: true, createdAt: true, approved: true } });
+  const users = await prisma.user.findMany({ select: { id: true, email: true, name: true, role: true, createdAt: true, approved: true, suspended: true, apiQueryCount: true } });
   return { props: { users: JSON.parse(JSON.stringify(users)) } };
 }

@@ -26,7 +26,10 @@ export const authOptions = {
         if (!user.approved) {
           throw new Error('Account pending approval');
         }
-        return { id: user.id, name: user.name, email: user.email, role: user.role, approved: user.approved };
+        if (user.suspended) {
+          throw new Error('Account suspended');
+        }
+        return { id: user.id, name: user.name, email: user.email, role: user.role, approved: user.approved, suspended: user.suspended };
       }
     })
   ],
@@ -38,6 +41,7 @@ export const authOptions = {
         token.id = user.id;
         token.role = user.role;
         token.approved = user.approved;
+        token.suspended = user.suspended;
       }
       return token;
     },
@@ -46,6 +50,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.approved = token.approved;
+        session.user.suspended = token.suspended;
       }
       return session;
     }
